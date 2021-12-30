@@ -1,0 +1,26 @@
+<div class="">
+    <table class="table table-hover m-2 text-nowrap" id="uea-table">
+        <thead class="thead-light">
+            <tr>
+                <th class="text-center align-middle" scope="col">都市圏名</th>
+                <th class="text-center align-middle" scope="col">人口<br>（人）</th>
+                <th class="text-center align-middle" scope="col">中心都市DID人口<br>（人）</th>
+                <th class="text-center align-middle" scope="col">年齢中位数<br>（歳）</th>
+                <th class="text-center align-middle" scope="col">年間商品販売額<br>（百万円）</th>
+                <th class="text-center align-middle" scope="col">製造業製品出荷額等<br>（百万円）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% items_ueadata.forEach(element => { %>
+                <tr>
+                    <th class="bg-white text-center" data-value="<%= element.ueaNameKana %>" scope="row"><ruby><%= element.ueaNameOmitted %><rt><%= element.ueaNameKana %></rt></ruby>都市圏</th>
+                    <td class="val text-right"><%= element.pop2000.toLocaleString() %></td>
+                    <td class="val text-right"><%= element.popDidC1.toLocaleString() %></td>
+                    <td class="val text-right"><%= element.ageMedian.toFixed(2) %></td>
+                    <td class="val text-right"><%= Number(element.annualSalesOfMarchandize.toFixed(0)).toLocaleString() %></td>
+                    <td class="val text-right"><%= Number(element.shipmentOfIndustry.toFixed(0)).toLocaleString() %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

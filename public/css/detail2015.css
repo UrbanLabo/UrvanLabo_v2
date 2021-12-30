@@ -1,0 +1,107 @@
+/*
+ * detail2015.ejs用スタイル
+ */
+@charset "UTF-8";
+.unit {
+    font-size: 1.25rem;
+    font-weight: 100;
+}
+
+h5 {
+    z-index: 5 !important;
+}
+#uea-list {
+    z-index: 0;
+}
+/*
+#map-container {
+    width: 100%;
+    height: 550px;
+}
+#map {
+    width: 100%;
+    height: 100%;
+    z-index: 0 !important;
+}*/
+
+#map-container {
+    position: relative;
+    width: 100%;
+}
+#map-container:before {
+    content:"";
+    display: block;
+    padding-top: 70%; /* 高さを幅の75%に固定 */
+}
+#map {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#uea-list-area {
+    overflow-y: scroll;
+}
+
+.modal-body {
+    overflow-y: scroll;
+}
+
+/*
+#poptransition {
+    width: 100%;
+    height: auto;
+}*/
+
+#poptransition-area {
+    position: relative;
+    width: 100%;
+}
+#poptransition-area:before {
+    content:"";
+    display: block;
+    padding-top: 60%; /* 高さを幅の75%に固定 */
+}
+#poptransition {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+#men-area, #women-area {
+    position: relative;
+    width: 100%;
+}
+#men-area:before, #women-area::before {
+    content:"";
+    display: block;
+    padding-top: 170%; /* 高さを幅の75%に固定 */
+}
+#men, #women {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.doughnut-area {
+    position: relative;
+    width: 100%;
+}
+.doughnut-area:before {
+    content:"";
+    display: block;
+    padding-top: 125%; /* 高さを幅の75%に固定 */
+}
+.doughnut {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+}

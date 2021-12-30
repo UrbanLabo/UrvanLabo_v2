@@ -1,0 +1,9 @@
+/*
+ * 共通読み込みスタイル：ページ用スタイルに優先して読み込み
+ */
+@charset "UTF-8";
+
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Noto Sans JP', Meiryo, 'メイリオ', sans-serif;
+}

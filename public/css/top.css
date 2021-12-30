@@ -1,0 +1,19 @@
+/*
+ * トップページ用スタイル
+ */
+@charset "UTF-8";
+.top-jumbotron {
+    background-image: url(../img/top-img.jpg);
+    background-color: rgb(185, 185, 185);
+    background-blend-mode: screen;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 25%;
+}
+
+.select-item-area, #main-area {
+    background-image: url(../img/bg-img-op06.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: right top;
+}

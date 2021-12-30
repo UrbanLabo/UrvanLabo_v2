@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>トップ&ensp;|&ensp;Urban&ensp;Labo-都市雇用圏データを閲覧できるサイト</title>
+        <link rel="icon" href="/img/favicon.ico">
+        <meta name="application-name" content="Urban Labo">
+        <meta name="description" content="日本の代表的な都市圏である「都市雇用圏」の情報をマップやグラフで簡単に閲覧できるサイトです。トップページです。">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/top.css">
+    </head>
+    <body>
+        <!-- headerの挿入 -->
+        <%- include('header') %> 
+
+        <main>
+            <div class="jumbotron jumbotron-fluid top-jumbotron">
+                <div class="container top-jumbotron-container">
+                    <h1 class="display-3 text-dark">都市を見よう</h1>
+                    <p class="lead text-dark">通勤に着目した都市圏である「都市雇用圏」を取り上げ、<br>
+                        さまざまなデータやグラフ・地図を用いてその姿を可視化します。</p>
+                </div>
+            </div>
+            <div class="select-item-area">
+                <div class="container-fluid">
+                    <h2 class="text-dark border-bottom border-info">このサイトについて</h2>
+                    <div class="row align-middle mb-5 justify-content-center justify-content-lg-start">
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" href="/aboutThisSite"><div class="bg-info text-light text-center p-3 rounded">このサイトについて</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" href="/aboutUEA"><div class="bg-info text-light text-center p-3 rounded">都市雇用圏とは</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">データについて</div></a></div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <h2 class="text-dark border-bottom border-info">全国都市雇用圏マップ</h2>
+                    <div class="row align-middle mb-5 justify-content-center justify-content-lg-start">
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item"><div class="bg-secondary text-light text-center p-3 rounded">2020（令和2）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" href="/ueamap2015"><div class="bg-info text-light text-center p-3 rounded">2015（平成27）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">2010（平成22）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">2005（平成17）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" href="/ueamap2000"><div class="bg-info text-light text-center p-3 rounded">2000（平成12）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">1995（平成7）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">1990（平成2）年</div></a></div>
+                        <div class="col-10 col-lg-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">1980（昭和55）年</div></a></div>
+                    </div>
+                </div>
+                <div class="container-fluid">
+                    <h2 class="text-dark border-bottom border-info">コンテンツ</h2>
+                    <div class="row align-middle mb-5 justify-content-center justify-content-lg-start">
+                        <div class="col-10 col-md-2 m-3"><a class="link-item" href="/dataTable"><div class="bg-info text-light text-center p-3 rounded">データ表</div></a></div>
+                        <div class="col-10 col-md-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">ダウンロード</div></a></div>
+                        <div class="col-10 col-md-2 m-3"><a class="link-item" ><div class="bg-secondary text-light text-center p-3 rounded">リンク</div></a></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <!-- footerの挿入 -->
+        <%- include('footer') %>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script> -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+</html>

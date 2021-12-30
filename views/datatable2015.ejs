@@ -1,0 +1,26 @@
+
+
+<div class="">
+    <table class="table table-hover m-2 text-nowrap" id="uea-table">
+        <thead class="thead-light">
+            <tr>
+                <th class="text-center align-middle" scope="col">都市圏名</th>
+                <th class="text-center align-middle" scope="col">人口<br>（人）</th>
+                <th class="text-center align-middle" scope="col">中心都市DID人口<br>（人）</th>
+                <th class="text-center align-middle" scope="col">年齢中位数<br>（歳）</th>
+                <th class="text-center align-middle" scope="col">域内生産<br>（百万円）</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% items_ueadata.forEach(element => { %>
+                <tr>
+                    <th class="bg-white text-center" data-value="<%= element.hiraganaName %>" scope="row"><a href="/uea2015/<%= element.ueaCode %>"><ruby><%= element.subNameOmitted %><rt><%= element.hiraganaName %></rt></ruby>都市圏</a></th>
+                    <td class="val text-right"><%= element.pop2015.toLocaleString() %></td>
+                    <td class="val text-right"><%= element.popDidC1.toLocaleString() %></td>
+                    <td class="val text-right"><%= element.ageMedian.toFixed(2) %></td>
+                    <td class="val text-right"><%= Number(element.gup.toFixed(0)).toLocaleString() %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>

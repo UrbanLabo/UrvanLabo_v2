@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>全国都市雇用圏マップ-2015（平成27）年&ensp;|&ensp;Urban&ensp;Labo-都市雇用圏データを閲覧できるサイト</title>
+        <link rel="icon" href="/img/favicon.ico">
+        <meta name="application-name" content="Urban Labo">
+        <meta name="description" content="日本の代表的な都市圏である「都市雇用圏」の情報をマップやグラフで簡単に閲覧できるサイトです。2015年基準の都市雇用圏マップです。">
+        <!-- bootstrapのstyleの読み込み -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- leafletの読み込み -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <!-- leaflet fullscreen プラグインの読み込み -->
+        <link rel="stylesheet" href="/library/leaflet.fullscreen-2.0.0/Control.FullScreen.css">
+        <script src="/library/leaflet.fullscreen-2.0.0/Control.FullScreen.js"></script>
+        <!-- fontの読み込み -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+        
+        <!-- styleの読み込み -->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/ueamap2015.css">
+    </head>
+    <body>
+        <!-- headerの挿入 -->
+        <%- include('header') %> 
+
+        <main>
+            <div class="container-fluid text-dark">
+                <div class="row">
+                    <!-- メイン -->
+                    <div class="col-12 col-lg-10 align-self-start mb-3" id="main-area">
+                        <div class="container-fluid">
+                            <div class="row mb-1 mt-3">
+                                <div class="col-12">
+                                    <h2 class="border-bottom border-info mb-3 text-info">全国都市雇用圏マップ&ensp;&ndash;&ensp;<wbr>2015（平成27）年</h2>
+                                    <div class="form-row">
+                                        <div class="form-group col-12 col-lg-3">
+                                            <label for="map-select">背景地図の選択</label>
+                                            <select class="form-control" id="map-select">
+                                                <option value="osm">Open&ensp;Street&ensp;Map</option>
+                                                <option value="gsi">地理院地図</option>
+                                                <option value="gsi-pale">地理院地図（淡色）</option>
+                                                <option value="gsi-eng">地理院地図（英語）</option>
+                                                <option value="gsi-pho">地理院地図（航空写真）</option>
+                                                <option value="gsi-whi">地理院地図（白地図）</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-12 col-lg-3">
+                                            <label for="data-select">統計データの選択</label>
+                                            <select class="form-control" id="data-select">
+                                                <option value="pop">人口</option>
+                                                <option value="pop-did">中心都市（副中心除く）DID人口</option>
+                                                <option value="pop-center">中心市町村（副中心含む）人口</option>
+                                                <option value="age">年齢中位数</option>
+                                                <option value="density-habi">可住地人口密度</option>
+                                                <option value="gup">圏内生産額（推計）</option>
+                                                <option value="gup-per">1人当たりの生産額（推計）</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div id="map-container">
+                                        <div id="map"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 都市圏一覧 -->
+                    <div class="col-12 col-lg-2 border-left border-info">
+                        <!-- リストグループ -->
+                        <div class="d-none d-lg-block" id="uea-list-area"><!-- lg以下の画面では非表示 -->
+                            <h5 class="text-body fixed-top position-sticky bg-white py-2">都市雇用圏一覧&ensp;&ndash;&ensp;2015（平成27）年</h5>
+                            <div class="list-group list-group-flush" id="uea-list">
+                                <% items_ueaIndex.forEach((item) => { %>
+                                    <% if (item.ueaCode == 1100 || item.ueaCode == 4100 || item.ueaCode == 13100 || item.ueaCode == 23100 || item.ueaCode == 26100 || item.ueaCode == 27100 || item.ueaCode == 28100 || item.ueaCode == 34100 || item.ueaCode == 40130) { %>
+                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action bg-dark text-white"><strong><%=item.subName %></strong></a>
+                                    <% } else {%>
+                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action"><%=item.subName %></a>
+                                    <% } %>
+                                <% }); %>
+                            </div>
+                        </div>
+
+                        <!-- モーダル -->
+                        <div class="d-lg-none mb-5"><!-- lgより小さい画面で表示 -->
+                            <h5 class="text-body"><a class="btn btn-info btn-block" data-toggle="modal" href="#uea-list" role="button" data-target="#modal-uea-list">都市雇用圏一覧</a></h5>
+                            <div class="modal fade" id="modal-uea-list" tabindex="-1" role="dialog" aria-labelledby="uea-list-lable" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-body" id="uea-list-lable">都市雇用圏一覧&ensp;&ndash;&ensp;2015（平成27）年</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="list-group list-group-flush" id="uea-list">
+                                                <% items_ueaIndex.forEach((item) => { %>
+                                                    <% if (item.ueaCode == 1100 || item.ueaCode == 4100 || item.ueaCode == 13100 || item.ueaCode == 23100 || item.ueaCode == 26100 || item.ueaCode == 27100 || item.ueaCode == 28100 || item.ueaCode == 34100 || item.ueaCode == 40130) { %>
+                                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action bg-dark text-white"><strong><%=item.subName %></strong></a>
+                                                    <% } else {%>
+                                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action"><%=item.subName %></a>
+                                                    <% } %>
+                                                <% }); %>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">閉じる</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- footerの挿入 -->
+        <%- include('footer') %>
+        <!-- jqueryの読み込み -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <!-- bootstrapのjs読み込み -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+    <script src="/js/fix-height.js"></script>
+    <script src="/geodata/uea2015v3.js"></script>
+    <script src="/js/drawUeamap2015.js"></script>
+</html>

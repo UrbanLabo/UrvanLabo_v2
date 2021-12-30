@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title><%= items_uea[0]["subName"] %>&ensp;|&ensp;Urban&ensp;Labo-都市雇用圏データを閲覧できるサイト</title>
+        <meta name="application-name" content="Urban Labo">
+        <meta name="description" content="日本の代表的な都市圏である「都市雇用圏」の情報をマップやグラフで簡単に閲覧できるサイトです。<%= items_uea[0]["subName2"] %> の紹介ページです。">
+        <link rel="icon" href="/img/favicon.ico">
+        <!-- bootstrapのstyleの読み込み -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- leafletの読み込み -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+        <!-- leaflet fullscreen プラグインの読み込み -->
+        <link rel="stylesheet" href="/library/leaflet.fullscreen-2.0.0/Control.FullScreen.css">
+        <script src="/library/leaflet.fullscreen-2.0.0/Control.FullScreen.js"></script>
+        <!-- Chart.jsの読み込み -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css" integrity="sha512-C7hOmCgGzihKXzyPU/z4nv97W0d9bv4ALuuEbSf6hm93myico9qa0hv4dODThvCsqQUmKmLcJmlpRmCaApr83g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.bundle.min.js" integrity="sha512-SuxO9djzjML6b9w9/I07IWnLnQhgyYVSpHZx0JV97kGBfTIsUYlWflyuW4ypnvhBrslz1yJ3R+S14fdCWmSmSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- fontの読み込み -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+        <!-- styleの読み込み -->
+        <link rel="stylesheet" href="/css/style.css">
+        <link rel="stylesheet" href="/css/detail2015.css">
+
+    </head>
+    <body>
+        <!-- headerの挿入 -->
+        <%- include('header') %> 
+
+        <main>
+            <div class="container-fluid text-body">
+                <div class="row">
+                    <!-- メイン -->
+                    <div class="col-12 col-lg-10 align-self-start mb-3" id="main-area">
+                        <div class="container-fluid">
+                            <div class="row mb-1 mt-3">
+                                <div class="col-12">
+                                    <h2 class="border-bottom border-info mb-3 text-info"><span class="d-inline-block"><ruby><%=items_uea[0]["subNameOmitted"]%><rt><%= items_uea[0]["hiraganaName"] %></rt></ruby>都市圏</span>
+                                        <% if (items_uea[0]["subName2"] != null && items_uea[0]["subName2"].length > 0) { %>
+                                        <span class="d-inline-block">（<ruby><%= items_uea[0]["subName2Omitted"] %><rt><%= items_uea[0]["subNameKana"] %> </rt></ruby>都市圏 ）</span>
+                                        <% } %></h2>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="container mt-3 mb-3">
+                            <h3 class="text-dark">概要</h3>
+                            <div class="row align-middle mb-2">
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card text-center">
+                                        <div class="card-header">市町村数</div>
+                                        <div class="card-body">
+                                            <p><span class="lead"><strong><%= items_uea[0]["centerNums"] + items_uea[0]["suburbNums"] %></strong></span><span class="unit"><small>市町村</small></span></p>
+                                            <p class="small">中心市町村：<%= items_uea[0]["centerNums"]%><br>郊外市町村：<%= items_uea[0]["suburbNums"] %></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card text-center">
+                                        <div class="card-header">人口</div>
+                                        <div class="card-body">
+                                            <p class="lead" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["pop_RANK"] %>位/222都市圏"><strong><%= items_uea[0]["pop2015"].toLocaleString() %></strong><span class="unit"><small>人</small></span></p>
+                                            <p class="small" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["popDidC1_RANK"] %>位/222都市圏">中心都市DID人口：<br><%= items_uea[0]["popDidC1"].toLocaleString() %><small>人</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card text-center">
+                                        <div class="card-header">面積</div>
+                                        <div class="card-body">
+                                            <p class="lead" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["area_RANK"] %>位/222都市圏"><strong><%= items_uea[0]["area"].toLocaleString() %></strong><small>㎢</small></p>
+                                            <p class="small" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["areaHabitable_RANK"] %>位/222都市圏">可住地面積：<br><%= items_uea[0]["areaHabitable"].toLocaleString() %><small>㎢</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card text-center">
+                                        <div class="card-header">人口密度</div>
+                                        <div class="card-body">
+                                            <p class="lead" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["density_RANK"] %>位/222都市圏"><strong><%= Math.floor(items_uea[0]["density"], 10).toLocaleString() %></strong><small>人/㎢</small></p>
+                                            <p class="small" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["densityHabitable_RANK"] %>位/222都市圏">可住地人口密度：<br><%= Math.floor(items_uea[0]["densityHabitable"]).toLocaleString() %><small>人/㎢</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card text-center">
+                                        <div class="card-header">年齢中位数</div>
+                                        <div class="card-body">
+                                            <p class="lead" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["ageMedian_RANK"] %>位/222都市圏"><strong><%= items_uea[0]["ageMedian"].toFixed(2) %></strong><small>歳</small></p>
+                                            <p class="small">※年齢が若い都市圏から昇順</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3 col-lg-2 mb-3">
+                                    <div class="card text-center">
+                                        <div class="card-header">域内生産</div>
+                                        <div class="card-body">
+                                            <p class="lead" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["gup_RANK"] %>位/222都市圏"><strong><%= Math.floor(items_uea[0]["gup"]/100).toLocaleString() %></strong><small>億円</small></p>
+                                            <p class="small" role="button" data-toggle="tooltip" data-placement="top" title="<%= items_uea[0]["gupPer_RANK"] %>位/222都市圏">人口1人当たり：<br><%= Math.floor(items_uea[0]["gupPer"]*100).toLocaleString() %><small>万円</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <small><small>【出典】<br>人口、面積、年齢中位数、人口密度・・・「国勢調査（平成27年）」<br>域内生産・・・内閣府「都道府県民経済計算（平成27年）」、経済産業省「経済センサス-基礎調査（平成26年）」、経済産業省「経済センサス-活動調査（平成28年）」、<br>農林水産省「市町村別農業産出額（推計）（平成27年）」、総務省「固定資産の価格等の概要調書（平成27年度）」より推計</small></small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="container mt-3 mb-3">
+                            <h3 class="text-dark">マップ</h3>
+                            <div class="row align-middle mb-5 pt-3">
+                                <div class="col-12 mb-3">
+                                    <div class=" ounded bg-light">
+                                        <div class="form-row pt-3 pr-3 pl-3">
+                                            <div class="form-group col-12 col-lg-6">
+                                                <label for="map-select">背景地図の選択</label>
+                                                <select class="form-control" id="map-select">
+                                                    <option value="osm">Open&ensp;Street&ensp;Map</option>
+                                                    <option value="gsi">地理院地図</option>
+                                                    <option value="gsi-pale">地理院地図（淡色）</option>
+                                                    <option value="gsi-eng">地理院地図（英語）</option>
+                                                    <option value="gsi-pho">地理院地図（航空写真）</option>
+                                                    <option value="gsi-whi">地理院地図（白地図）</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-12 col-lg-6">
+                                                <label for="data-select">表示データの選択</label>
+                                                <select class="form-control" id="data-select">
+                                                    <option value="center-suburb">中心郊外別塗分け</option>
+                                                    <option value="commuter-rate">通勤率</option>
+                                                    <option value="employment-residese-ratio">従業常住比率</option>
+                                                    <option value="pop-did">DID人口</option>
+                                                    <option value="pop1975">過去人口（1975年）</option>
+                                                    <option value="pop1995">過去人口（1995年）</option>
+                                                    <option value="pop2015">現在人口（2015年）</option>
+                                                    <option value="pop2045">将来推計人口（2045年）</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row mb-2 border-dark pt-2 pl-3 pr-3 pb-0">
+                                            <div class="col-12">
+                                                <p class="mb-0 mp-0"><strong>通勤率</strong>の表示オプション</p>
+                                            </div>
+                                            
+                                            <div class="form-group col-12 col-lg-4">
+                                                <label>従業地/常住地の選択</label>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="from-to-select" id="to-check" value="to" checked disabled>
+                                                    <label class="form-check-label" for="to-check">従業地</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="radio" name="from-to-select" id="from-check" value="from" disabled>
+                                                    <label class="form-check-label" for="from-check">常住地</label>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-12 col-lg-8">
+                                                <label for="commuter-select">市町村の選択</label>
+                                                <select class="form-control" id="commuter-select" disabled>
+                                                    <% items_city.forEach(item => { %>
+                                                        <option value="<%= item.cityCode %>" data-cityname="<%= item.cityName %>" data-ueacode="<%= item.ueaCode %>"><%= item.cityName %>
+                                                            <% if (item.cityFlag == 'C1') { %>
+                                                                （中心都市）
+                                                            <% } else if (item.cityFlag =='C2') { %>
+                                                                （副中心）
+                                                            <% } %>
+                                                        </option>  
+                                                    <% }) %>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="ml-3 mt-2 mb-2">
+                                            <button type="button" class="btn btn-dark" id="display-map-btn">表示</button>
+                                        </div>
+                                        <div class="col-12 p-0">
+                                            <div id="map-container">
+                                                <div id="map"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="container mt-3 mb-3">
+                            <h3 class="text-dark">グラフ</h3>
+                            <div class="row align-middle mb-5">
+                                <div class="col-12">
+                                    <div class="rounded bg-light mb-3 p-3">
+                                        <h4 class="h5 text-center">人口推移（2015年基準の範囲に相当する地域）</h4>
+                                        <div id="poptransition-area">
+                                            <canvas id="poptransition"></canvas>
+                                        </div>
+                                        <div class="text-right">
+                                            <small><small>※福島県内の都市圏は2020年以降の将来推計値なし</small></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 mb-3">
+                                    <div class="rounded bg-light mb-3 p-3">
+                                        <h4 class="h5 text-center">年齢別人口構成</h4>
+                                        <div class="row no-gutters" id="poppyramid-area">
+                                            <div class="col-6 " id="men-area">
+                                                <canvas id="men"></canvas>
+                                            </div>
+                                            <div class="col-6" id="women-area">
+                                                <canvas id="women"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="rounded bg-light mb-3 p-3">
+                                        <h4 class="h5 text-center">地域分類別人口構成</h4>
+                                        <div id="popratio-area" class="doughnut-area">
+                                            <canvas id="popratio" class="doughnut"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="rounded bg-light mb-3 p-3">
+                                        <h4 class="h5 text-center">産業別就業者構成</h4>
+                                        <div id="workerratio-area" class="doughnut-area">
+                                            <canvas id="workerratio" class="doughnut"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <div class="rounded bg-light mb-3 p-3">
+                                        <h4 class="h5 text-center">産業別生産額</h4>
+                                        <div id="gupratio-area" class="doughnut-area">
+                                            <canvas id="gupratio" class="doughnut"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 都市圏一覧 -->
+                    <div class="col-12 col-lg-2 border-left border-info">
+                        <!-- リストグループ -->
+                        <div class="d-none d-lg-block" id="uea-list-area"><!-- lg以下の画面では非表示 -->
+                            <h5 class="text-body fixed-top position-sticky bg-white py-2">都市雇用圏一覧&ensp;&ndash;&ensp;2015（平成27）年</h5>
+                            <div class="list-group list-group-flush" id="uea-list">
+                                <% items_ueaIndex.forEach((item) => { %>
+                                    <% if (item.ueaCode == 1100 || item.ueaCode == 4100 || item.ueaCode == 13100 || item.ueaCode == 23100 || item.ueaCode == 26100 || item.ueaCode == 27100 || item.ueaCode == 28100 || item.ueaCode == 34100 || item.ueaCode == 40130) { %>
+                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action bg-dark text-white"><strong><%=item.subName %></strong></a>
+                                    <% } else {%>
+                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action"><%=item.subName %></a>
+                                    <% } %>
+                                <% }); %>
+                            </div>
+                        </div>
+
+                        <!-- モーダル -->
+                        <div class="d-lg-none mb-5"><!-- lgより小さい画面で表示 -->
+                            <h5 class="text-body"><a class="btn btn-info btn-block" data-toggle="modal" href="#uea-list" role="button" data-target="#modal-uea-list">都市雇用圏一覧</a></h5>
+                            <div class="modal fade" id="modal-uea-list" tabindex="-1" role="dialog" aria-labelledby="uea-list-lable" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-body" id="uea-list-lable">都市雇用圏一覧&ensp;&ndash;&ensp;2015（平成27）年</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="list-group list-group-flush" id="uea-list">
+                                                <% items_ueaIndex.forEach((item) => { %>
+                                                    <% if (item.ueaCode == 1100 || item.ueaCode == 4100 || item.ueaCode == 13100 || item.ueaCode == 23100 || item.ueaCode == 26100 || item.ueaCode == 27100 || item.ueaCode == 28100 || item.ueaCode == 34100 || item.ueaCode == 40130) { %>
+                                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action bg-dark text-white"><strong><%=item.subName %></strong></a>
+                                                    <% } else {%>
+                                                        <a href="/uea2015/<%=item.ueaCode%>" class="list-group-item list-group-item-action"><%=item.subName %></a>
+                                                    <% } %>
+                                                <% }); %>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-info" data-dismiss="modal">閉じる</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- footerの挿入 -->
+        <%- include('footer') %>
+        <!-- jqueryの読み込み -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <!-- bootstrapのjs読み込み -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    </body>
+    <script type="text/javascript" src="/js/fix-height.js"></script>
+    <input type="hidden" name="a" id="ueaCode" value="<%= JSON.stringify(items_uea[0]["ueaCode"]) %>">
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip();
+        var ueaCode = document.getElementById("ueaCode").value;
+        console.log("ueaCode:" + ueaCode);
+    </script>
+    <script type="text/javascript" src="/geodata/city2015v2.js"></script>
+    <script type="text/javascript" src="/js/drawCitymap2015.js"></script>
+    <script type="text/javascript" src="/js/poptransition2015.js"></script>
+    <script type="text/javascript" src="/js/poppyramid2015.js"></script>
+    <script type="text/javascript" src="/js/popratio2015.js"></script>
+    <script type="text/javascript" src="/js/workerratio2015.js"></script>
+    <script type="text/javascript" src="/js/gupratio2015.js"></script>
+</html>

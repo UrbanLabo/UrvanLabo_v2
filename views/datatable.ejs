@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <title>データ表&ensp;|&ensp;Urban&ensp;Labo-都市雇用圏データを閲覧できるサイト</title>
+        <link rel="icon" href="/img/favicon.ico">
+        <meta name="application-name" content="Urban Labo">
+        <meta name="description" content="日本の代表的な都市圏である「都市雇用圏」の情報をマップやグラフで簡単に閲覧できるサイトです。都市雇用圏データ表のページです。">
+        <!-- bootstrapのstyleの読み込み -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- fontの読み込み -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+        
+        <!-- styleの読み込み -->
+        <link rel="stylesheet" href="/css/style.css">
+    </head>
+    <body>
+        <!-- headerの挿入 -->
+        <%- include('header') %> 
+
+        <main class="text-dark">
+            <div class="container-fluid text-dark mb-3 mt-3">
+                <div class="row justify-content-center">
+                    <div class="col-12">
+                        <h2 class="border-bottom border-info text-info">都市雇用圏データ表</h2>
+                    </div>
+                </div>
+            </div>
+            </div class="container-fluid mb-3">
+                <div class="row justify-content-center mt-5 mb-3">
+                    <div class="col-lg-10 col-12">
+
+                        <form method="POST" action="/dataTable">
+                            <div class="form-row align-items-center">
+                                <div class="col-auto">
+                                    <!-- <label for="uea-year-select">調査年の選択</label> -->
+                                    <select class="form-control" id="uea-year-select" name="year-select">
+                                        <option value="2015">2015（平成27）年</option>
+                                        <option value="2010" disabled>2010（平成22）年</option>
+                                        <option value="2005" disabled>2005（平成17）年</option>
+                                        <option value="2000">2000（平成12）年</option>
+                                        <option value="1995" disabled>1995（平成7）年</option>
+                                        <option value="1990" disabled>1990（平成2）年</option>
+                                        <option value="1980" disabled>1980（昭和55）年</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="submit" class="btn btn-dark">表示</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="mt-3">
+                            <h3 class="text-info">都市雇用圏一覧表 | <%=year%>年</h3>
+                            <div id="datatable-area">
+                                <% if (year == "2015") { %>
+                                    <%- include('datatable2015') %>
+                                <% } else if (year == "2000") { %>
+                                    <%- include('datatable2000') %>
+                                <% } else { %>
+                                    <%- include('datatable2015') %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- footerの挿入 -->
+        <%- include('footer') %>
+        <!-- jqueryの読み込み -->
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+        <!-- bootstrapのjs読み込み -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- tablesorterの読み込み -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/css/theme.bootstrap_4.min.css" integrity="sha512-2C6AmJKgt4B+bQc08/TwUeFKkq8CsBNlTaNcNgUmsDJSU1Fg+R6azDbho+ZzuxEkJnCjLZQMozSq3y97ZmgwjA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.min.js" integrity="sha512-qzgd5cYSZcosqpzpn7zF2ZId8f/8CHmFKZ8j7mU4OUXTNRd5g+ZHBPsgKEwoqxCtdQvExE5LprwwPAgoicguNg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.31.3/js/jquery.tablesorter.widgets.min.js" integrity="sha512-dj/9K5GRIEZu+Igm9tC16XPOTz0RdPk9FGxfZxShWf65JJNU2TjbElGjuOo3EhwAJRPhJxwEJ5b+/Ouo+VqZdQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="/js/datatable-sorter-pager.js"></script>
+    </body>
+</html>
