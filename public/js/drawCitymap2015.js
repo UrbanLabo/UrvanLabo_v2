@@ -414,7 +414,7 @@ function style_popDid(feature) {
 }
 function onEachFeature_popDid_popup(feature, layer){
     if(feature.properties.popDid > 0) {
-        layer.bindPopup('<p class="popup">'+ feature.properties.cityName + '</p><hr><p clas="popupData">DID人口：' + (feature.properties.pop2015).toLocaleString() + '人</p>',{className: 'tipstyle', sticky: 'true', direction:'top', offset:[0,-15], opacity: 0.9});
+        layer.bindPopup('<p class="popup">'+ feature.properties.cityName + '</p><hr><p clas="popupData">DID人口：' + (feature.properties.popDid).toLocaleString() + '人</p>',{className: 'tipstyle', sticky: 'true', direction:'top', offset:[0,-15], opacity: 0.9});
     } else {
         layer.bindPopup('<p class="popup">'+ feature.properties.cityName + '</p><hr><p clas="popupData">DID設定なし</p>',{className: 'tipstyle', sticky: 'true', direction:'top', offset:[0,-15], opacity: 0.9});
     }
